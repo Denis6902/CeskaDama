@@ -288,9 +288,12 @@ public class HraCeskaDama
     private void VypisHerniDesku(bool barevne = false, int barevneX = -1, int barevneY = -1)
     {
         Console.Clear();
-
+        Console.Write("    Y Y Y Y Y Y Y Y\n");
+        Console.Write("    0 1 2 3 4 5 6 7\n");
+        
         for (int x = 0; x < HerniDeska.GetLength(0); x++)
         {
+            Console.Write($"X {x} ");
             for (int y = 0; y < HerniDeska.GetLength(1); y++)
             {
                 if (barevne && x == barevneX && y == barevneY)
@@ -305,18 +308,6 @@ public class HraCeskaDama
 
             Console.WriteLine();
         }
-
-        Console.WriteLine("-------------------");
-        Console.Write("   Y Y Y Y Y Y Y Y\n");
-        Console.Write("   0 1 2 3 4 5 6 7\n");
-        Console.WriteLine("X 0");
-        Console.WriteLine("X 1");
-        Console.WriteLine("X 2");
-        Console.WriteLine("X 3");
-        Console.WriteLine("X 4");
-        Console.WriteLine("X 5");
-        Console.WriteLine("X 6");
-        Console.WriteLine("X 7");
     }
 
     private void VypisHodnotuDesky(int x, int y)
