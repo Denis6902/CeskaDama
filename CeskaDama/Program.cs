@@ -2,6 +2,5 @@
 
 using CeskaDama;
 
-Console.WriteLine("Hello, World!");
 HraCeskaDama ceskaDama = new HraCeskaDama();
-ceskaDama.VypisHerniDesku();
+ceskaDama.ZacitHru();
