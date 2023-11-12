@@ -54,7 +54,6 @@ public class HraCeskaDama
             if (KontrolaPohybuKamene(x, y, xChcesPohnout, yChcesPohnout, barvaKamene))
             {
                 PohniKamen(x, y, xChcesPohnout, yChcesPohnout);
-                OdeberKamen(x, y);
                 Console.Clear();
                 VypisHerniDesku();
             }
@@ -65,39 +64,100 @@ public class HraCeskaDama
         }
     }
 
-    private void OdeberKamen(int i, int y)
+    private void OdeberKamen(int x, int y)
     {
         // pohnul se cerny, takze odebereme bily kamen
-        if (HerniDeska[i, y] == "B")
-        {
-            PocetCernychKamenu--;
-        }
-        else
+        if (HerniDeska[x, y] == "B")
         {
             PocetBilychKamenu--;
         }
+        else
+        {
+            PocetCernychKamenu--;
+        }
+        
+        Console.WriteLine($"XPocet bilych kamenu: {PocetBilychKamenu}");
+        Console.WriteLine($"XPocet cernych kamenu: {PocetCernychKamenu}");
+        Console.ReadKey();
     }
 
-    private void PohniKamen(int i, int y, int xChcesPohnout, int yChcesPohnout)
+    private void PosunOJedno(int x, int y, int xChcesPohnout, int yChcesPohnout)
     {
-        HerniDeska[xChcesPohnout, yChcesPohnout] = HerniDeska[i, y];
-
-        // skok diagonálně
-        if (Math.Abs(i - xChcesPohnout) == 2 && Math.Abs(y - yChcesPohnout) == 2)
+        // posun dolu vlevo o jedno
+        if (x - 1 == xChcesPohnout && y - 1 == yChcesPohnout)
         {
-            HerniDeska[i, y] = " ";
-            return;
+            HerniDeska[x, y] = " ";
         }
 
-        HerniDeska[i, y] = " ";
+        // posun dolu vpravo o jedno
+        if (x + 1 == xChcesPohnout && y - 1 == yChcesPohnout)
+        {
+            HerniDeska[x, y] = " ";
+        }
+
+        // posun nahoru vlevo o jedno
+        if (x - 1 == xChcesPohnout && y + 1 == yChcesPohnout)
+        {
+            HerniDeska[x, y] = " ";
+        }
+
+        // posun nahoru vpravo o jedno
+        if (x + 1 == xChcesPohnout && y + 1 == yChcesPohnout)
+        {
+            HerniDeska[x, y] = " ";
+        }
     }
 
-    private bool KontrolaPohybuKamene(int i, int y, int xChcesPohnout, int yChcesPohnout, string barvaKamene)
+    private void PosunODva(int x, int y, int xChcesPohnout, int yChcesPohnout)
+    {
+       // posun dolu vlevo o dva
+        if (x - 2 == xChcesPohnout && y - 2 == yChcesPohnout)
+        {
+            OdeberKamen(x - 1, y - 1); 
+            HerniDeska[x, y] = " ";
+            HerniDeska[x - 1, y - 1] = " ";
+        }
+
+        // posun dolu vpravo o dva
+        if (x + 2 == xChcesPohnout && y - 2 == yChcesPohnout)
+        {
+            OdeberKamen(x + 1, y - 1);
+            HerniDeska[x, y] = " ";
+            HerniDeska[x + 1, y - 1] = " ";
+        }
+
+        // posun nahoru vlevo o dva
+        if (x - 2 == xChcesPohnout && y + 2 == yChcesPohnout)
+        {
+            OdeberKamen(x - 1, y + 1);
+            HerniDeska[x, y] = " ";
+            HerniDeska[x - 1, y + 1] = " ";
+            
+        }
+
+        // posun nahoru vpravo o dva
+        if (x + 2 == xChcesPohnout && y + 2 == yChcesPohnout)
+        {
+            OdeberKamen(x + 1, y + 1);
+            HerniDeska[x, y] = " ";
+            HerniDeska[x + 1, y + 1] = " ";
+        }
+    }
+
+    private void PohniKamen(int x, int y, int xChcesPohnout, int yChcesPohnout)
+    {
+        HerniDeska[xChcesPohnout, yChcesPohnout] = HerniDeska[x, y];
+
+        PosunOJedno(x, y, xChcesPohnout, yChcesPohnout);
+        PosunODva(x, y, xChcesPohnout, yChcesPohnout);
+    }
+
+    private bool KontrolaPohybuKamene(int x, int y, int xChcesPohnout, int yChcesPohnout, string barvaKamene)
     {
         // convert to if
-        if (!KontrolaJeNaDesce(i, y))
+        if (!KontrolaJeNaDesce(x, y))
         {
-            Console.WriteLine($"Kamen {i},{y} neni na desce!");
+            Console.WriteLine($"Kamen {x},{y} neni na desce!");
             return false;
         }
 
@@ -107,35 +167,35 @@ public class HraCeskaDama
             return false;
         }
 
-        if (!KontrolaLzePohnout(i, y, xChcesPohnout, yChcesPohnout, barvaKamene))
+        if (!KontrolaLzePohnout(x, y, xChcesPohnout, yChcesPohnout, barvaKamene))
         {
-            Console.WriteLine($"Kamen {i},{y} nelze pohnout na {xChcesPohnout},{yChcesPohnout}!");
+            Console.WriteLine($"Kamen {x},{y} nelze pohnout na {xChcesPohnout},{yChcesPohnout}!");
             return false;
         }
 
-        if (!KontrolaDiaonalnihoPohybu(i, y, xChcesPohnout, yChcesPohnout, 1) &&
-            !KontrolaDiaonalnihoPohybu(i, y, xChcesPohnout, yChcesPohnout, 2))
+        if (!KontrolaDiaonalnihoPohybu(x, y, xChcesPohnout, yChcesPohnout, 1) &&
+            !KontrolaDiaonalnihoPohybu(x, y, xChcesPohnout, yChcesPohnout, 2))
         {
-            Console.WriteLine($"Kamen {i},{y} nelze pohnout diagonálně na {xChcesPohnout},{yChcesPohnout}!");
+            Console.WriteLine($"Kamen {x},{y} nelze pohnout diagonálně na {xChcesPohnout},{yChcesPohnout}!");
             return false;
         }
 
         return true;
     }
 
-    private bool KontrolaDiaonalnihoPohybu(int i, int y, int xChcesPohnout, int yChcesPohnout, int posunO) =>
-        i - posunO == xChcesPohnout && y - posunO == yChcesPohnout
-        || i + posunO == xChcesPohnout && y + posunO == yChcesPohnout
-        || i - posunO == xChcesPohnout && y + posunO == yChcesPohnout
-        || i + posunO == xChcesPohnout && y - posunO == yChcesPohnout;
+    private bool KontrolaDiaonalnihoPohybu(int x, int y, int xChcesPohnout, int yChcesPohnout, int posunO) =>
+        x - posunO == xChcesPohnout && y - posunO == yChcesPohnout
+        || x + posunO == xChcesPohnout && y + posunO == yChcesPohnout
+        || x - posunO == xChcesPohnout && y + posunO == yChcesPohnout
+        || x + posunO == xChcesPohnout && y - posunO == yChcesPohnout;
 
 
-    private bool KontrolaLzePohnout(int i, int y, int xChcesPohnout, int yChcesPohnout, string barvaKamene) =>
-        HerniDeska[i, y] != " " && HerniDeska[xChcesPohnout, yChcesPohnout] == " " && HerniDeska[i, y] == barvaKamene;
+    private bool KontrolaLzePohnout(int x, int y, int xChcesPohnout, int yChcesPohnout, string barvaKamene) =>
+        HerniDeska[x, y] != " " && HerniDeska[xChcesPohnout, yChcesPohnout] == " " && HerniDeska[x, y] == barvaKamene;
 
 
-    private bool KontrolaJeNaDesce(int i, int y) =>
-        i >= 0 && i <= HerniDeska.GetLength(0) && y >= 0 && y <= HerniDeska.GetLength(1);
+    private bool KontrolaJeNaDesce(int x, int y) =>
+        x >= 0 && x <= HerniDeska.GetLength(0) && y >= 0 && y <= HerniDeska.GetLength(1);
 
     private bool KontrolaKonceHry()
     {
@@ -170,17 +230,17 @@ public class HraCeskaDama
         string znak = "B";
 
         // prvni pulka desky (bile policka)
-        for (int i = 0; i < (HerniDeska.GetLength(0) / 2) - 1; i++)
+        for (int x = 0; x < (HerniDeska.GetLength(0) / 2) - 1; x++)
         {
-            for (int j = 0; j < HerniDeska.GetLength(1); j++)
+            for (int y = 0; y < HerniDeska.GetLength(1); y++)
             {
-                if ((i + j) % 2 == 0)
+                if ((x + y) % 2 == 0)
                 {
-                    HerniDeska[i, j] = znak;
+                    HerniDeska[x, y] = znak;
                 }
                 else
                 {
-                    HerniDeska[i, j] = " ";
+                    HerniDeska[x, y] = " ";
                 }
             }
         }
@@ -191,17 +251,17 @@ public class HraCeskaDama
         string znak = "C";
 
         // druha pulka desky (cerna policka)
-        for (int i = (HerniDeska.GetLength(0) / 2) + 1; i < HerniDeska.GetLength(0); i++)
+        for (int x = (HerniDeska.GetLength(0) / 2) + 1; x < HerniDeska.GetLength(0); x++)
         {
-            for (int j = 0; j < HerniDeska.GetLength(1); j++)
+            for (int y = 0; y < HerniDeska.GetLength(1); y++)
             {
-                if ((i + j) % 2 != 0)
+                if ((x + y) % 2 != 0)
                 {
-                    HerniDeska[i, j] = " ";
+                    HerniDeska[x, y] = " ";
                 }
                 else
                 {
-                    HerniDeska[i, j] = znak;
+                    HerniDeska[x, y] = znak;
                 }
             }
         }
@@ -216,11 +276,11 @@ public class HraCeskaDama
 
     private void NastavStredDesky()
     {
-        for (int i = 3; i < 5; i++)
+        for (int x = 3; x < 5; x++)
         {
-            for (int j = 0; j < HerniDeska.GetLength(1); j++)
+            for (int y = 0; y < HerniDeska.GetLength(1); y++)
             {
-                HerniDeska[i, j] = " ";
+                HerniDeska[x, y] = " ";
             }
         }
     }
@@ -229,17 +289,17 @@ public class HraCeskaDama
     {
         Console.Clear();
 
-        for (int i = 0; i < HerniDeska.GetLength(0); i++)
+        for (int x = 0; x < HerniDeska.GetLength(0); x++)
         {
-            for (int j = 0; j < HerniDeska.GetLength(1); j++)
+            for (int y = 0; y < HerniDeska.GetLength(1); y++)
             {
-                if (barevne && i == barevneX && j == barevneY)
+                if (barevne && x == barevneX && y == barevneY)
                 {
-                    VypisHodnotuDesky(i, j);
+                    VypisHodnotuDesky(x, y);
                 }
                 else
                 {
-                    Console.Write(HerniDeska[i, j] + " ");
+                    Console.Write(HerniDeska[x, y] + " ");
                 }
             }
 
