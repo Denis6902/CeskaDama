@@ -2,24 +2,46 @@ namespace CeskaDama;
 
 public class HraCeskaDama
 {
-    public string[,] HerniDeska { get; set; }
+    private string[,] HerniDeska { get; set; }
     
     public HraCeskaDama()
     {
+        HerniDeska = new string[8, 8];
         NastavHerniDesku();
     }
     
-    public void NastavHerniDesku()
-    {
-        HerniDeska = new string[8, 8];
-        
+    private void NastavHerniDesku()
+    {        
         // prvni pulka desky (bile policka)
-        for (int i = 0; i < HerniDeska.GetLength(0) / 2; i++)
+        for (int i = 0; i < (HerniDeska.GetLength(0) / 2) - 1; i++)
         {
             for (int j = 0; j < HerniDeska.GetLength(1); j++)
             {
-
-            }            
+                if ((i + j) % 2 == 0)
+                {
+                    HerniDeska[i, j] = "B";
+                }
+                else
+                {
+                    HerniDeska[i, j] = " ";
+                }
+            }           
+        }
+        
+        // druha pulka desky (cerna policka)
+        for (int i = (HerniDeska.GetLength(0) / 2) + 1; i < HerniDeska.GetLength(0); i++)
+        {
+            for (int j = 0; j < HerniDeska.GetLength(1); j++)
+            {
+                if ((i + j) % 2 != 0)
+                {
+                    HerniDeska[i, j] = " ";
+                }
+                else
+                {
+                    HerniDeska[i, j] = "C";
+                }
+            }           
         }
     }
     
