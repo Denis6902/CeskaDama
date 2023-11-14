@@ -16,7 +16,6 @@ public class HraCeskaDama
     public void ZacitHru()
     {
         Console.Clear();
-        Console.WriteLine("Zaciname hru Ceska dama!");
         HraSkoncila = false;
         NastavHerniDesku();
         VypisHerniDesku();
@@ -45,6 +44,7 @@ public class HraCeskaDama
 
             int xChcesPohnout = int.Parse(souradniceKameneChcesPohnout.Split(",")[0]);
             int yChcesPohnout = int.Parse(souradniceKameneChcesPohnout.Split(",")[1]);
+
 
             if (KontrolaKonceHry())
             {
@@ -75,86 +75,133 @@ public class HraCeskaDama
         {
             PocetCernychKamenu--;
         }
-        
-        Console.WriteLine($"XPocet bilych kamenu: {PocetBilychKamenu}");
-        Console.WriteLine($"XPocet cernych kamenu: {PocetCernychKamenu}");
+
+        Console.WriteLine($"Pocet bilych kamenu: {PocetBilychKamenu}");
+        Console.WriteLine($"Pocet cernych kamenu: {PocetCernychKamenu}");
         Console.ReadKey();
     }
 
-    private void PosunOJedno(int x, int y, int xChcesPohnout, int yChcesPohnout)
+    private bool PosunOJedno(int x, int y, int xChcesPohnout, int yChcesPohnout)
     {
-        // posun dolu vlevo o jedno
-        if (x - 1 == xChcesPohnout && y - 1 == yChcesPohnout)
+        switch (HerniDeska[x, y])
         {
-            HerniDeska[x, y] = " ";
-        }
+            case "B":
+            {
+                // posun dolu vlevo o jedno
+                if (x + 1 == xChcesPohnout && y - 1 == yChcesPohnout)
+                {
+                    HerniDeska[xChcesPohnout, yChcesPohnout] = HerniDeska[x, y];
+                    HerniDeska[x, y] = " ";
+                    return true;
+                }
 
-        // posun dolu vpravo o jedno
-        if (x + 1 == xChcesPohnout && y - 1 == yChcesPohnout)
-        {
-            HerniDeska[x, y] = " ";
-        }
+                // posun dolu vpravo o jedno
+                if (x + 1 == xChcesPohnout && y + 1 == yChcesPohnout)
+                {
+                    HerniDeska[xChcesPohnout, yChcesPohnout] = HerniDeska[x, y];
+                    HerniDeska[x, y] = " ";
+                    return true;
+                }
 
-        // posun nahoru vlevo o jedno
-        if (x - 1 == xChcesPohnout && y + 1 == yChcesPohnout)
-        {
-            HerniDeska[x, y] = " ";
-        }
+                return false;
+            }
+            case "C":
+            {
+                // posun nahoru vpravo o jedno
+                if (x - 1 == xChcesPohnout && y + 1 == yChcesPohnout)
+                {
+                    HerniDeska[xChcesPohnout, yChcesPohnout] = HerniDeska[x, y];
+                    HerniDeska[x, y] = " ";
+                    return true;
+                }
 
-        // posun nahoru vpravo o jedno
-        if (x + 1 == xChcesPohnout && y + 1 == yChcesPohnout)
-        {
-            HerniDeska[x, y] = " ";
+                // posun nahoru vlevo o jedno
+                if (x - 1 == xChcesPohnout && y - 1 == yChcesPohnout)
+                {
+                    HerniDeska[xChcesPohnout, yChcesPohnout] = HerniDeska[x, y];
+                    HerniDeska[x, y] = " ";
+                    return true;
+                }
+
+                return false;
+            }
+            default:
+                return false;
         }
     }
 
-    private void PosunODva(int x, int y, int xChcesPohnout, int yChcesPohnout)
+    private bool PosunODva(int x, int y, int xChcesPohnout, int yChcesPohnout)
     {
-       // posun dolu vlevo o dva
-        if (x - 2 == xChcesPohnout && y - 2 == yChcesPohnout)
+        switch (HerniDeska[x, y])
         {
-            OdeberKamen(x - 1, y - 1); 
-            HerniDeska[x, y] = " ";
-            HerniDeska[x - 1, y - 1] = " ";
-        }
+            case "B":
+            {
+                // posun dolu vlevo o dva
+                if (x + 2 == xChcesPohnout && y - 2 == yChcesPohnout)
+                {
+                    OdeberKamen(x + 1, y - 1);
+                    HerniDeska[xChcesPohnout, yChcesPohnout] = HerniDeska[x, y];
+                    HerniDeska[x, y] = " ";
+                    HerniDeska[x + 1, y - 1] = " ";
+                }
 
-        // posun dolu vpravo o dva
-        if (x + 2 == xChcesPohnout && y - 2 == yChcesPohnout)
-        {
-            OdeberKamen(x + 1, y - 1);
-            HerniDeska[x, y] = " ";
-            HerniDeska[x + 1, y - 1] = " ";
-        }
+                // posun dolu vpravo o dva
+                if (x + 2 == xChcesPohnout && y + 2 == yChcesPohnout)
+                {
+                    OdeberKamen(x + 1, y + 1);
+                    HerniDeska[xChcesPohnout, yChcesPohnout] = HerniDeska[x, y];
+                    HerniDeska[x, y] = " ";
+                    HerniDeska[x + 1, y + 1] = " ";
+                }
 
-        // posun nahoru vlevo o dva
-        if (x - 2 == xChcesPohnout && y + 2 == yChcesPohnout)
-        {
-            OdeberKamen(x - 1, y + 1);
-            HerniDeska[x, y] = " ";
-            HerniDeska[x - 1, y + 1] = " ";
-            
-        }
+                return true;
+            }
+            case "C":
+            {
+                // posun nahoru vlevo o dva
+                if (x - 2 == xChcesPohnout && y - 2 == yChcesPohnout)
+                {
+                    OdeberKamen(x - 1, y - 1);
+                    HerniDeska[xChcesPohnout, yChcesPohnout] = HerniDeska[x, y];
+                    HerniDeska[x, y] = " ";
+                    HerniDeska[x - 1, y - 1] = " ";
+                }
 
-        // posun nahoru vpravo o dva
-        if (x + 2 == xChcesPohnout && y + 2 == yChcesPohnout)
-        {
-            OdeberKamen(x + 1, y + 1);
-            HerniDeska[x, y] = " ";
-            HerniDeska[x + 1, y + 1] = " ";
+                // posun nahoru vpravo o dva
+                if (x - 2 == xChcesPohnout && y + 2 == yChcesPohnout)
+                {
+                    OdeberKamen(x - 1, y + 1);
+                    HerniDeska[xChcesPohnout, yChcesPohnout] = HerniDeska[x, y];
+                    HerniDeska[x, y] = " ";
+                    HerniDeska[x - 1, y + 1] = " ";
+                }
+
+                return true;
+            }
+            default:
+                return false;
         }
     }
 
     private void PohniKamen(int x, int y, int xChcesPohnout, int yChcesPohnout)
     {
-        HerniDeska[xChcesPohnout, yChcesPohnout] = HerniDeska[x, y];
+        bool posunutoOJedno = PosunOJedno(x, y, xChcesPohnout, yChcesPohnout);
 
-        PosunOJedno(x, y, xChcesPohnout, yChcesPohnout);
-        PosunODva(x, y, xChcesPohnout, yChcesPohnout);
+        if (posunutoOJedno)
+        {
+            return;
+        }
+
+        bool posunutoODva = PosunODva(x, y, xChcesPohnout, yChcesPohnout);
+
+        if (!posunutoODva)
+        {
+            Console.WriteLine("Nelze posunout");
+        }
     }
 
     private bool KontrolaPohybuKamene(int x, int y, int xChcesPohnout, int yChcesPohnout, string barvaKamene)
     {
-        // convert to if
         if (!KontrolaJeNaDesce(x, y))
         {
             Console.WriteLine($"Kamen {x},{y} neni na desce!");
@@ -220,7 +267,6 @@ public class HraCeskaDama
         Console.WriteLine("Konec hry!");
         HraSkoncila = true;
         ResetPocetKamenu();
-
 
         Console.WriteLine(kdoVyhral.ToLower() == "bily" ? "Vyhral bily hrac!" : "Vyhral cerny hrac!");
     }
@@ -290,7 +336,7 @@ public class HraCeskaDama
         Console.Clear();
         Console.Write("    Y Y Y Y Y Y Y Y\n");
         Console.Write("    0 1 2 3 4 5 6 7\n");
-        
+
         for (int x = 0; x < HerniDeska.GetLength(0); x++)
         {
             Console.Write($"X {x} ");
@@ -298,7 +344,7 @@ public class HraCeskaDama
             {
                 if (barevne && x == barevneX && y == barevneY)
                 {
-                    VypisHodnotuDesky(x, y);
+                    VypisBarevneHodnotuDesky(x, y);
                 }
                 else
                 {
@@ -310,7 +356,7 @@ public class HraCeskaDama
         }
     }
 
-    private void VypisHodnotuDesky(int x, int y)
+    private void VypisBarevneHodnotuDesky(int x, int y)
     {
         Console.BackgroundColor = ConsoleColor.White;
         Console.ForegroundColor = ConsoleColor.Black;
