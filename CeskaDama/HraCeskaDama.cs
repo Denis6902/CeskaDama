@@ -169,6 +169,16 @@ public class HraCeskaDama
             }
             case "C":
             {
+                // posun nahoru vpravo o dva
+                if (x - 2 == xChcesPohnout && y + 2 == yChcesPohnout)
+                {
+                    OdeberKamen(x - 1, y + 1);
+                    HerniDeska[xChcesPohnout, yChcesPohnout] = HerniDeska[x, y];
+                    HerniDeska[x, y] = " ";
+                    HerniDeska[x - 1, y + 1] = " ";
+                    return true;
+                }
+                
                 // posun nahoru vlevo o dva
                 if (x - 2 == xChcesPohnout && y - 2 == yChcesPohnout)
                 {
@@ -179,15 +189,6 @@ public class HraCeskaDama
                     return true;
                 }
 
-                // posun nahoru vpravo o dva
-                if (x - 2 == xChcesPohnout && y + 2 == yChcesPohnout)
-                {
-                    OdeberKamen(x - 1, y + 1);
-                    HerniDeska[xChcesPohnout, yChcesPohnout] = HerniDeska[x, y];
-                    HerniDeska[x, y] = " ";
-                    HerniDeska[x - 1, y + 1] = " ";
-                    return true;
-                }
 
                 return false;
             }
