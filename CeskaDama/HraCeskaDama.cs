@@ -18,7 +18,7 @@ public class HraCeskaDama
         Console.Clear();
         HraSkoncila = false;
         NastavHerniDesku();
-        VypisHerniDesku();
+        VypisCeskaDama.VypisHerniDesku(HerniDeska);
         HerniSmycka();
     }
 
@@ -29,23 +29,22 @@ public class HraCeskaDama
         while (!HraSkoncila)
         {
             barvaKamene = barvaKamene == "B" ? "C" : "B";
-            Console.WriteLine($"Na tahu je {barvaKamene} hrac.");
+            VypisCeskaDama.VypisKdoJeNaTahu(barvaKamene);
 
-            Console.WriteLine("Zadej souradnice kamene, ktery chces pohnout (x, y): ");
+            VypisCeskaDama.VypisKteryKamenChcesPohnout();
             string souradniceKamene = Console.ReadLine();
 
             int x = int.Parse(souradniceKamene.Split(",")[0]);
             int y = int.Parse(souradniceKamene.Split(",")[1]);
 
-            VypisHerniDesku(true, x, y);
-
-            Console.WriteLine("Zadej souradnice, kam chces kamen pohnout (x, y): ");
+            VypisCeskaDama.VypisHerniDesku(HerniDeska, true, x ,y);
+            
+            VypisCeskaDama.VypisKamPosunoutKamen();
             string souradniceKameneChcesPohnout = Console.ReadLine();
 
             int xChcesPohnout = int.Parse(souradniceKameneChcesPohnout.Split(",")[0]);
             int yChcesPohnout = int.Parse(souradniceKameneChcesPohnout.Split(",")[1]);
-
-
+            
             if (KontrolaKonceHry())
             {
                 break;
@@ -55,11 +54,11 @@ public class HraCeskaDama
             {
                 PohniKamen(x, y, xChcesPohnout, yChcesPohnout);
                 Console.Clear();
-                VypisHerniDesku();
+                VypisCeskaDama.VypisHerniDesku(HerniDeska);
             }
             else
             {
-                Console.WriteLine("Neplatny tah!");
+                VypisCeskaDama.VypisNeplatnyTah();
             }
         }
     }
@@ -76,8 +75,7 @@ public class HraCeskaDama
             PocetCernychKamenu--;
         }
 
-        Console.WriteLine($"Pocet bilych kamenu: {PocetBilychKamenu}");
-        Console.WriteLine($"Pocet cernych kamenu: {PocetCernychKamenu}");
+        VypisCeskaDama.VypisPocetKamenu(PocetBilychKamenu, PocetCernychKamenu);
         Console.ReadKey();
     }
 
@@ -196,7 +194,7 @@ public class HraCeskaDama
 
         if (!posunutoODva)
         {
-            Console.WriteLine("Nelze posunout");
+            VypisCeskaDama.VypisNelzePohnout();
         }
     }
 
@@ -204,26 +202,26 @@ public class HraCeskaDama
     {
         if (!KontrolaJeNaDesce(x, y))
         {
-            Console.WriteLine($"Kamen {x},{y} neni na desce!");
+            VypisCeskaDama.VypisChybu($"Kamen {x},{y} neni na desce!");
             return false;
         }
 
         if (!KontrolaJeNaDesce(xChcesPohnout, yChcesPohnout))
         {
-            Console.WriteLine($"Kamen {xChcesPohnout},{yChcesPohnout} neni na desce!");
+            VypisCeskaDama.VypisChybu($"Kamen {xChcesPohnout},{yChcesPohnout} neni na desce!");
             return false;
         }
 
         if (!KontrolaLzePohnout(x, y, xChcesPohnout, yChcesPohnout, barvaKamene))
         {
-            Console.WriteLine($"Kamen {x},{y} nelze pohnout na {xChcesPohnout},{yChcesPohnout}!");
+            VypisCeskaDama.VypisChybu($"Kamen {x},{y} nelze pohnout na {xChcesPohnout},{yChcesPohnout}!");
             return false;
         }
 
         if (!KontrolaDiaonalnihoPohybu(x, y, xChcesPohnout, yChcesPohnout, 1) &&
             !KontrolaDiaonalnihoPohybu(x, y, xChcesPohnout, yChcesPohnout, 2))
         {
-            Console.WriteLine($"Kamen {x},{y} nelze pohnout diagonálně na {xChcesPohnout},{yChcesPohnout}!");
+            VypisCeskaDama.VypisChybu($"Kamen {x},{y} nelze pohnout diagonálně na {xChcesPohnout},{yChcesPohnout}!");
             return false;
         }
 
@@ -264,11 +262,10 @@ public class HraCeskaDama
 
     private void KonecHry(string kdoVyhral)
     {
-        Console.WriteLine("Konec hry!");
         HraSkoncila = true;
         ResetPocetKamenu();
 
-        Console.WriteLine(kdoVyhral.ToLower() == "bily" ? "Vyhral bily hrac!" : "Vyhral cerny hrac!");
+        VypisCeskaDama.VypisKonecHry(kdoVyhral);
     }
 
     private void NastavBilePolicka()
@@ -329,39 +326,5 @@ public class HraCeskaDama
                 HerniDeska[x, y] = " ";
             }
         }
-    }
-
-    private void VypisHerniDesku(bool barevne = false, int barevneX = -1, int barevneY = -1)
-    {
-        Console.Clear();
-        Console.Write("     Y Y Y Y Y Y Y Y \n");
-        Console.Write("     0 1 2 3 4 5 6 7 \n");
-        Console.Write("                     \n");
-
-        for (int x = 0; x < HerniDeska.GetLength(0); x++)
-        {
-            Console.Write($"X {x}  ");
-            for (int y = 0; y < HerniDeska.GetLength(1); y++)
-            {
-                if (barevne && x == barevneX && y == barevneY)
-                {
-                    VypisBarevneHodnotuDesky(x, y);
-                }
-                else
-                {
-                    Console.Write(HerniDeska[x, y] + " ");
-                }
-            }
-
-            Console.WriteLine();
-        }
-    }
-
-    private void VypisBarevneHodnotuDesky(int x, int y)
-    {
-        Console.BackgroundColor = ConsoleColor.White;
-        Console.ForegroundColor = ConsoleColor.Black;
-        Console.Write(HerniDeska[x, y] + " ");
-        Console.ResetColor();
     }
 }
