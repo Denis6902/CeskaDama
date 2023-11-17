@@ -37,14 +37,14 @@ public class HraCeskaDama
             int x = int.Parse(souradniceKamene.Split(",")[0]);
             int y = int.Parse(souradniceKamene.Split(",")[1]);
 
-            VypisCeskaDama.VypisHerniDesku(HerniDeska, true, x ,y);
-            
+            VypisCeskaDama.VypisHerniDesku(HerniDeska, true, x, y);
+
             VypisCeskaDama.VypisKamPosunoutKamen();
             string souradniceKameneChcesPohnout = Console.ReadLine();
 
             int xChcesPohnout = int.Parse(souradniceKameneChcesPohnout.Split(",")[0]);
             int yChcesPohnout = int.Parse(souradniceKameneChcesPohnout.Split(",")[1]);
-            
+
             if (KontrolaKonceHry())
             {
                 break;

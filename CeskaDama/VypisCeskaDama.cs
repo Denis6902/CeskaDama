@@ -27,14 +27,19 @@ public static class VypisCeskaDama
             Console.WriteLine();
         }
     }
-    
+
     public static void VypisChybu(string chyba) => Console.WriteLine(chyba);
     public static void VypisKdoJeNaTahu(string barvaKamene) => Console.WriteLine($"Na tahu je {barvaKamene} hrac.");
     public static void VypisNeplatnyTah() => Console.WriteLine("Neplatny tah!");
-    public static void VypisKamPosunoutKamen() => Console.WriteLine("Zadej souradnice, kam chces kamen pohnout (x, y): ");
-    public static void VypisKteryKamenChcesPohnout() => Console.WriteLine("Zadej souradnice kamene, ktery chces pohnout (x, y): ");
+
+    public static void VypisKamPosunoutKamen() =>
+        Console.WriteLine("Zadej souradnice, kam chces kamen pohnout (x, y): ");
+
+    public static void VypisKteryKamenChcesPohnout() =>
+        Console.WriteLine("Zadej souradnice kamene, ktery chces pohnout (x, y): ");
+
     public static void VypisNelzePohnout() => Console.WriteLine("Nelze pohnout!");
-    
+
     private static void VypisBarevneHodnotuDesky(string[,] herniDeska, int x, int y)
     {
         Console.BackgroundColor = ConsoleColor.White;
@@ -48,7 +53,7 @@ public static class VypisCeskaDama
         Console.WriteLine("Konec hry!");
         Console.WriteLine(kdoVyhral.ToLower() == "bily" ? "Vyhral bily hrac!" : "Vyhral cerny hrac!");
     }
-    
+
     public static void VypisPocetKamenu(int pocetBilychKamenu, int pocetCernychKamenu)
     {
         Console.WriteLine($"Pocet bilych kamenu: {pocetBilychKamenu}");
