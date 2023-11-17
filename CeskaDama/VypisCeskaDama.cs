@@ -34,6 +34,9 @@ public static class VypisCeskaDama
                         case Barvy.Cerna:
                             Console.Write("C" + " ");
                             break;
+                        case Barvy.Zadna:
+                            Console.Write(" " + " ");
+                            break;
                         default:
                             Console.Write(" " + " ");
                             break;
@@ -49,17 +52,19 @@ public static class VypisCeskaDama
     {
         if (kamen.Barva == Barvy.Bila)
         {
-            Console.BackgroundColor = ConsoleColor.White;
+            Console.BackgroundColor = ConsoleColor.Gray;
             Console.ForegroundColor = ConsoleColor.Black;
-            Console.Write("B ");
+            Console.Write("B");
             Console.ResetColor();
+            Console.Write(" ");
         }
         else
         {
             Console.BackgroundColor = ConsoleColor.Gray;
             Console.ForegroundColor = ConsoleColor.White;
-            Console.Write("C ");
+            Console.Write("C");
             Console.ResetColor();
+            Console.Write(" ");
         }
     }
 

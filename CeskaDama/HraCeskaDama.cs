@@ -7,12 +7,63 @@ public class HraCeskaDama
     private int PocetBilychKamenu { get; set; } = 12;
     private int PocetCernychKamenu { get; set; } = 12;
 
+    public void OtestujDamu()
+    {
+        int[,] testovaciPole = new int[,]
+        {
+            {2, 0},
+            {3, 1},
+            {5, 3},
+            {4, 2},
+            {3, 1},
+            {5, 3},
+            {5, 1},
+            {4, 0},
+            {2, 6},
+            {3, 7},
+            {6, 2},
+            {5, 1},
+            {5, 3},
+            {6, 2},
+            {6, 4},
+            {5, 3},
+            {3, 7},
+            {4, 6},
+            {7, 3},
+            {6, 4},
+            {6, 2},
+            {7, 3}
+        };
+
+        Barvy barvaKamene = Barvy.Cerna;
+
+
+        for (int i = 0; i < testovaciPole.GetLength(0) - 1; i += 2)
+        {
+            barvaKamene = barvaKamene == Barvy.Bila ? Barvy.Cerna : Barvy.Bila;
+            PohniKamen(testovaciPole[i, 0], testovaciPole[i, 1], testovaciPole[i + 1, 0], testovaciPole[i + 1, 1],
+                barvaKamene);
+
+
+            Console.Clear();
+            VypisCeskaDama.VypisHerniDesku(HerniDeska);
+        }
+    }
+
     public void ZacitHru()
     {
         Console.Clear();
         HraSkoncila = false;
         NastavHerniDesku();
         VypisCeskaDama.VypisHerniDesku(HerniDeska);
+
+        if (true)
+        {
+            OtestujDamu();
+            Console.WriteLine("konec testu");
+            Console.ReadKey();
+        }
+
         HerniSmycka();
     }
 
@@ -69,7 +120,7 @@ public class HraCeskaDama
         }
 
         VypisCeskaDama.VypisPocetKamenu(PocetBilychKamenu, PocetCernychKamenu);
-        Console.ReadKey();
+        Thread.Sleep(1000);
     }
 
     private void PohniKamen(int x, int y, int xChcesPohnout, int yChcesPohnout, Barvy barvaKamene)
@@ -78,6 +129,10 @@ public class HraCeskaDama
 
         if (posunutoOJedno)
         {
+            if (KontrolaZmenyNaDamu(xChcesPohnout, barvaKamene))
+            {
+                ZmenaNaDamu(xChcesPohnout, yChcesPohnout);
+            }
             return;
         }
 
@@ -88,7 +143,7 @@ public class HraCeskaDama
             VypisCeskaDama.VypisNelzePohnout();
             return;
         }
-
+        
         if (KontrolaZmenyNaDamu(xChcesPohnout, barvaKamene))
         {
             ZmenaNaDamu(xChcesPohnout, yChcesPohnout);
@@ -108,8 +163,20 @@ public class HraCeskaDama
         }
     }
 
-    private void ZmenaNaDamu(int xChcesPohnout, int yChcesPohnout) =>
+    private void ZmenaNaDamu(int xChcesPohnout, int yChcesPohnout)
+    {
         HerniDeska[xChcesPohnout, yChcesPohnout].Dama = true;
+        Console.WriteLine("problem se svim");
+    }
+
+    private void VymenaKamenu(int x, int y, int xChcesPohnout, int yChcesPohnout)
+    {
+
+        HerniDeska[xChcesPohnout, yChcesPohnout].Barva = HerniDeska[x, y].Barva;
+        HerniDeska[xChcesPohnout, yChcesPohnout].Dama = HerniDeska[x, y].Dama;
+        HerniDeska[x,y].Barva = Barvy.Zadna;
+        HerniDeska[x, y].Dama = false;
+    }
 
     private bool PosunOJedno(int x, int y, int xChcesPohnout, int yChcesPohnout)
     {
@@ -120,16 +187,14 @@ public class HraCeskaDama
                 // posun dolu vlevo o jedno
                 if (x + 1 == xChcesPohnout && y - 1 == yChcesPohnout)
                 {
-                    HerniDeska[xChcesPohnout, yChcesPohnout] = HerniDeska[x, y];
-                    HerniDeska[x, y].Barva = Barvy.Zadna;
+                    VymenaKamenu(x, y, xChcesPohnout, yChcesPohnout);
                     return true;
                 }
 
                 // posun dolu vpravo o jedno
                 if (x + 1 == xChcesPohnout && y + 1 == yChcesPohnout)
                 {
-                    HerniDeska[xChcesPohnout, yChcesPohnout] = HerniDeska[x, y];
-                    HerniDeska[x, y].Barva = Barvy.Zadna;
+                    VymenaKamenu(x, y, xChcesPohnout, yChcesPohnout);
                     return true;
                 }
 
@@ -140,16 +205,14 @@ public class HraCeskaDama
                 // posun nahoru vpravo o jedno
                 if (x - 1 == xChcesPohnout && y + 1 == yChcesPohnout)
                 {
-                    HerniDeska[xChcesPohnout, yChcesPohnout] = HerniDeska[x, y];
-                    HerniDeska[x, y].Barva = Barvy.Zadna;
+                    VymenaKamenu(x, y, xChcesPohnout, yChcesPohnout);
                     return true;
                 }
 
                 // posun nahoru vlevo o jedno
                 if (x - 1 == xChcesPohnout && y - 1 == yChcesPohnout)
                 {
-                    HerniDeska[xChcesPohnout, yChcesPohnout] = HerniDeska[x, y];
-                    HerniDeska[x, y].Barva = Barvy.Zadna;
+                    VymenaKamenu(x, y, xChcesPohnout, yChcesPohnout);
                     return true;
                 }
 
@@ -170,9 +233,10 @@ public class HraCeskaDama
                 if (x + 2 == xChcesPohnout && y - 2 == yChcesPohnout)
                 {
                     OdeberKamen(x + 1, y - 1);
-                    HerniDeska[xChcesPohnout, yChcesPohnout] = HerniDeska[x, y];
-                    HerniDeska[x, y].Barva = Barvy.Zadna;
+                    VymenaKamenu(x, y, xChcesPohnout, yChcesPohnout);
+
                     HerniDeska[x + 1, y - 1].Barva = Barvy.Zadna;
+                    HerniDeska[x + 1, y - 1].Dama = false;
                     return true;
                 }
 
@@ -180,9 +244,10 @@ public class HraCeskaDama
                 if (x + 2 == xChcesPohnout && y + 2 == yChcesPohnout)
                 {
                     OdeberKamen(x + 1, y + 1);
-                    HerniDeska[xChcesPohnout, yChcesPohnout] = HerniDeska[x, y];
-                    HerniDeska[x, y].Barva = Barvy.Zadna;
+                    VymenaKamenu(x, y, xChcesPohnout, yChcesPohnout);
+
                     HerniDeska[x + 1, y + 1].Barva = Barvy.Zadna;
+                    HerniDeska[x + 1, y + 1].Dama = false;
                     return true;
                 }
 
@@ -194,9 +259,10 @@ public class HraCeskaDama
                 if (x - 2 == xChcesPohnout && y + 2 == yChcesPohnout)
                 {
                     OdeberKamen(x - 1, y + 1);
-                    HerniDeska[xChcesPohnout, yChcesPohnout] = HerniDeska[x, y];
-                    HerniDeska[x, y].Barva = Barvy.Zadna;
+                    VymenaKamenu(x, y, xChcesPohnout, yChcesPohnout);
+
                     HerniDeska[x - 1, y + 1].Barva = Barvy.Zadna;
+                    HerniDeska[x - 1, y + 1].Dama = false;
                     return true;
                 }
 
@@ -204,9 +270,10 @@ public class HraCeskaDama
                 if (x - 2 == xChcesPohnout && y - 2 == yChcesPohnout)
                 {
                     OdeberKamen(x - 1, y - 1);
-                    HerniDeska[xChcesPohnout, yChcesPohnout] = HerniDeska[x, y];
-                    HerniDeska[x, y].Barva = Barvy.Zadna;
+                    VymenaKamenu(x, y, xChcesPohnout, yChcesPohnout);
+
                     HerniDeska[x - 1, y - 1].Barva = Barvy.Zadna;
+                    HerniDeska[x - 1, y - 1].Dama = false;
                     return true;
                 }
 
