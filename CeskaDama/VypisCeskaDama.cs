@@ -28,6 +28,14 @@ public static class VypisCeskaDama
         }
     }
 
+    private static void VypisBarevneHodnotuDesky(string[,] herniDeska, int x, int y)
+    {
+        Console.BackgroundColor = ConsoleColor.White;
+        Console.ForegroundColor = ConsoleColor.Black;
+        Console.Write(herniDeska[x, y] + " ");
+        Console.ResetColor();
+    }
+
     public static void VypisChybu(string chyba) => Console.WriteLine(chyba);
     public static void VypisKdoJeNaTahu(string barvaKamene) => Console.WriteLine($"Na tahu je {barvaKamene} hrac.");
     public static void VypisNeplatnyTah() => Console.WriteLine("Neplatny tah!");
@@ -39,14 +47,6 @@ public static class VypisCeskaDama
         Console.WriteLine("Zadej souradnice kamene, ktery chces pohnout (x, y): ");
 
     public static void VypisNelzePohnout() => Console.WriteLine("Nelze pohnout!");
-
-    private static void VypisBarevneHodnotuDesky(string[,] herniDeska, int x, int y)
-    {
-        Console.BackgroundColor = ConsoleColor.White;
-        Console.ForegroundColor = ConsoleColor.Black;
-        Console.Write(herniDeska[x, y] + " ");
-        Console.ResetColor();
-    }
 
     public static void VypisKonecHry(string kdoVyhral)
     {

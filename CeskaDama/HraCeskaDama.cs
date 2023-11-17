@@ -7,12 +7,6 @@ public class HraCeskaDama
     private int PocetBilychKamenu { get; set; } = 12;
     private int PocetCernychKamenu { get; set; } = 12;
 
-    private void ResetPocetKamenu()
-    {
-        PocetBilychKamenu = 0;
-        PocetCernychKamenu = 0;
-    }
-
     public void ZacitHru()
     {
         Console.Clear();
@@ -77,6 +71,23 @@ public class HraCeskaDama
 
         VypisCeskaDama.VypisPocetKamenu(PocetBilychKamenu, PocetCernychKamenu);
         Console.ReadKey();
+    }
+
+    private void PohniKamen(int x, int y, int xChcesPohnout, int yChcesPohnout)
+    {
+        bool posunutoOJedno = PosunOJedno(x, y, xChcesPohnout, yChcesPohnout);
+
+        if (posunutoOJedno)
+        {
+            return;
+        }
+
+        bool posunutoODva = PosunODva(x, y, xChcesPohnout, yChcesPohnout);
+
+        if (!posunutoODva)
+        {
+            VypisCeskaDama.VypisNelzePohnout();
+        }
     }
 
     private bool PosunOJedno(int x, int y, int xChcesPohnout, int yChcesPohnout)
@@ -181,23 +192,6 @@ public class HraCeskaDama
         }
     }
 
-    private void PohniKamen(int x, int y, int xChcesPohnout, int yChcesPohnout)
-    {
-        bool posunutoOJedno = PosunOJedno(x, y, xChcesPohnout, yChcesPohnout);
-
-        if (posunutoOJedno)
-        {
-            return;
-        }
-
-        bool posunutoODva = PosunODva(x, y, xChcesPohnout, yChcesPohnout);
-
-        if (!posunutoODva)
-        {
-            VypisCeskaDama.VypisNelzePohnout();
-        }
-    }
-
     private bool KontrolaPohybuKamene(int x, int y, int xChcesPohnout, int yChcesPohnout, string barvaKamene)
     {
         if (!KontrolaJeNaDesce(x, y))
@@ -268,6 +262,19 @@ public class HraCeskaDama
         VypisCeskaDama.VypisKonecHry(kdoVyhral);
     }
 
+    private void ResetPocetKamenu()
+    {
+        PocetBilychKamenu = 0;
+        PocetCernychKamenu = 0;
+    }
+
+    private void NastavHerniDesku()
+    {
+        NastavBilePolicka();
+        NastavStredDesky();
+        NastavCernePolicka();
+    }
+
     private void NastavBilePolicka()
     {
         string znak = "B";
@@ -308,13 +315,6 @@ public class HraCeskaDama
                 }
             }
         }
-    }
-
-    private void NastavHerniDesku()
-    {
-        NastavBilePolicka();
-        NastavStredDesky();
-        NastavCernePolicka();
     }
 
     private void NastavStredDesky()
