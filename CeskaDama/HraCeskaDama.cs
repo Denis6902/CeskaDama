@@ -152,6 +152,7 @@ public class HraCeskaDama
                     HerniDeska[xChcesPohnout, yChcesPohnout] = HerniDeska[x, y];
                     HerniDeska[x, y] = " ";
                     HerniDeska[x + 1, y - 1] = " ";
+                    return true;
                 }
 
                 // posun dolu vpravo o dva
@@ -161,9 +162,10 @@ public class HraCeskaDama
                     HerniDeska[xChcesPohnout, yChcesPohnout] = HerniDeska[x, y];
                     HerniDeska[x, y] = " ";
                     HerniDeska[x + 1, y + 1] = " ";
+                    return true;
                 }
 
-                return true;
+                return false;
             }
             case "C":
             {
@@ -174,6 +176,7 @@ public class HraCeskaDama
                     HerniDeska[xChcesPohnout, yChcesPohnout] = HerniDeska[x, y];
                     HerniDeska[x, y] = " ";
                     HerniDeska[x - 1, y - 1] = " ";
+                    return true;
                 }
 
                 // posun nahoru vpravo o dva
@@ -183,9 +186,10 @@ public class HraCeskaDama
                     HerniDeska[xChcesPohnout, yChcesPohnout] = HerniDeska[x, y];
                     HerniDeska[x, y] = " ";
                     HerniDeska[x - 1, y + 1] = " ";
+                    return true;
                 }
 
-                return true;
+                return false;
             }
             default:
                 return false;
