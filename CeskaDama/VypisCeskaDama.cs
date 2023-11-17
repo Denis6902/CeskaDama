@@ -2,7 +2,7 @@ namespace CeskaDama;
 
 public static class VypisCeskaDama
 {
-    public static void VypisHerniDesku(string[,] herniDeska, bool barevne = false, int barevneX = -1, int barevneY = -1)
+    public static void VypisHerniDesku(Kamen[,] herniDeska, bool barevne = false, int barevneX = -1, int barevneY = -1)
     {
         Console.Clear();
         Console.Write("     Y Y Y Y Y Y Y Y \n");
@@ -20,7 +20,24 @@ public static class VypisCeskaDama
                 }
                 else
                 {
-                    Console.Write(herniDeska[x, y] + " ");
+                    switch (herniDeska[x, y].Barva)
+                    {
+                        case Barvy.Bila when herniDeska[x, y].Dama:
+                            VypisDamu(herniDeska[x, y]);
+                            break;
+                        case Barvy.Bila:
+                            Console.Write("B" + " ");
+                            break;
+                        case Barvy.Cerna when herniDeska[x, y].Dama:
+                            VypisDamu(herniDeska[x, y]);
+                            break;
+                        case Barvy.Cerna:
+                            Console.Write("C" + " ");
+                            break;
+                        default:
+                            Console.Write(" " + " ");
+                            break;
+                    }
                 }
             }
 
@@ -28,11 +45,29 @@ public static class VypisCeskaDama
         }
     }
 
-    private static void VypisBarevneHodnotuDesky(string[,] herniDeska, int x, int y)
+    private static void VypisDamu(Kamen kamen)
+    {
+        if (kamen.Barva == Barvy.Bila)
+        {
+            Console.BackgroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.Write("B ");
+            Console.ResetColor();
+        }
+        else
+        {
+            Console.BackgroundColor = ConsoleColor.Gray;
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write("C ");
+            Console.ResetColor();
+        }
+    }
+
+    private static void VypisBarevneHodnotuDesky(Kamen[,] herniDeska, int x, int y)
     {
         Console.BackgroundColor = ConsoleColor.White;
         Console.ForegroundColor = ConsoleColor.Black;
-        Console.Write(herniDeska[x, y] + " ");
+        Console.Write(herniDeska[x,y].Barva == Barvy.Bila ? "B " : "C ");
         Console.ResetColor();
     }
 
