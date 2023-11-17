@@ -46,7 +46,7 @@ public class HraCeskaDama
 
             if (KontrolaPohybuKamene(x, y, xChcesPohnout, yChcesPohnout, barvaKamene))
             {
-                PohniKamen(x, y, xChcesPohnout, yChcesPohnout);
+                PohniKamen(x, y, xChcesPohnout, yChcesPohnout, barvaKamene);
                 Console.Clear();
                 VypisCeskaDama.VypisHerniDesku(HerniDeska);
             }
@@ -73,7 +73,7 @@ public class HraCeskaDama
         Console.ReadKey();
     }
 
-    private void PohniKamen(int x, int y, int xChcesPohnout, int yChcesPohnout)
+    private void PohniKamen(int x, int y, int xChcesPohnout, int yChcesPohnout, string barvaKamene)
     {
         bool posunutoOJedno = PosunOJedno(x, y, xChcesPohnout, yChcesPohnout);
 
@@ -87,8 +87,29 @@ public class HraCeskaDama
         if (!posunutoODva)
         {
             VypisCeskaDama.VypisNelzePohnout();
+            return;
+        }
+
+        if (KontrolaZmenyNaDamu(xChcesPohnout, yChcesPohnout, barvaKamene))
+        {
+            ZmenaNaDamu(xChcesPohnout, yChcesPohnout);
         }
     }
+
+    private bool KontrolaZmenyNaDamu(int xChcesPohnout, int yChcesPohnout, string barvaKamene)
+    {
+        switch (barvaKamene)
+        {
+            case "B":
+                return xChcesPohnout == HerniDeska.GetLength(0) - 1;
+            case "C":
+                return xChcesPohnout == 0;
+            default:
+                return false;
+        }
+    }
+
+    private void ZmenaNaDamu(int xChcesPohnout, int yChcesPohnout) => HerniDeska[xChcesPohnout, yChcesPohnout] = "D";
 
     private bool PosunOJedno(int x, int y, int xChcesPohnout, int yChcesPohnout)
     {
@@ -178,7 +199,7 @@ public class HraCeskaDama
                     HerniDeska[x - 1, y + 1] = " ";
                     return true;
                 }
-                
+
                 // posun nahoru vlevo o dva
                 if (x - 2 == xChcesPohnout && y - 2 == yChcesPohnout)
                 {
@@ -233,10 +254,8 @@ public class HraCeskaDama
         || x - posunO == xChcesPohnout && y + posunO == yChcesPohnout
         || x + posunO == xChcesPohnout && y - posunO == yChcesPohnout;
 
-
     private bool KontrolaLzePohnout(int x, int y, int xChcesPohnout, int yChcesPohnout, string barvaKamene) =>
         HerniDeska[x, y] != " " && HerniDeska[xChcesPohnout, yChcesPohnout] == " " && HerniDeska[x, y] == barvaKamene;
-
 
     private bool KontrolaJeNaDesce(int x, int y) =>
         x >= 0 && x <= HerniDeska.GetLength(0) && y >= 0 && y <= HerniDeska.GetLength(1);
