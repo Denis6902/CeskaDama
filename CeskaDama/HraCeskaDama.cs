@@ -9,7 +9,7 @@ public class HraCeskaDama
 
     public void OtestujDamu()
     {
-        int[,] testovaciPole = new int[,]
+        int[,] testovaciPole = new[,]
         {
             {2, 0},
             {3, 1},
@@ -133,6 +133,7 @@ public class HraCeskaDama
             {
                 ZmenaNaDamu(xChcesPohnout, yChcesPohnout);
             }
+
             return;
         }
 
@@ -143,12 +144,55 @@ public class HraCeskaDama
             VypisCeskaDama.VypisNelzePohnout();
             return;
         }
-        
+
         if (KontrolaZmenyNaDamu(xChcesPohnout, barvaKamene))
         {
             ZmenaNaDamu(xChcesPohnout, yChcesPohnout);
         }
+
+        if (JeDama(x, y))
+        {
+            bool posunutoOX = PosunOX(x, y, xChcesPohnout, yChcesPohnout);
+
+            if (!posunutoOX)
+            {
+                VypisCeskaDama.VypisNelzePohnout();
+            }
+        }
     }
+
+    private bool PosunOX(int x, int y, int xChcesPohnout, int yChcesPohnout)
+    {
+        switch (HerniDeska[x, y].Barva)
+        {
+            case Barvy.Bila:
+                if (xChcesPohnout > x)
+                {
+                    VymenaKamenu(x, y, xChcesPohnout, yChcesPohnout);
+                    return true;
+                }
+
+
+                return false;
+
+            case Barvy.Cerna:
+                if (xChcesPohnout < x)
+                {
+                    VymenaKamenu(x, y, xChcesPohnout, yChcesPohnout);
+                    return true;
+                }
+
+                return false;
+
+            default:
+                return false;
+        }
+
+
+        return false;
+    }
+
+    private bool JeDama(int x, int y) => HerniDeska[x, y].Dama;
 
     private bool KontrolaZmenyNaDamu(int xChcesPohnout, Barvy barvaKamene)
     {
@@ -171,10 +215,9 @@ public class HraCeskaDama
 
     private void VymenaKamenu(int x, int y, int xChcesPohnout, int yChcesPohnout)
     {
-
         HerniDeska[xChcesPohnout, yChcesPohnout].Barva = HerniDeska[x, y].Barva;
         HerniDeska[xChcesPohnout, yChcesPohnout].Dama = HerniDeska[x, y].Dama;
-        HerniDeska[x,y].Barva = Barvy.Zadna;
+        HerniDeska[x, y].Barva = Barvy.Zadna;
         HerniDeska[x, y].Dama = false;
     }
 
