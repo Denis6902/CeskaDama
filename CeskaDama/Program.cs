@@ -1,8 +1,8 @@
 // See https://aka.ms/new-console-template for more information
 
-using CeskaDama;
+using CzechQueen;
 
 // http://www.deskovehry.info/pravidla/ceska-dama.htm
 
-HraCeskaDama ceskaDama = new HraCeskaDama();
-ceskaDama.ZacitHru();
+GameCzechQueen czechQueen = new GameCzechQueen();
+czechQueen.StartGame();
