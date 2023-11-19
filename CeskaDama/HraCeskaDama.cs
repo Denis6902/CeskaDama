@@ -318,73 +318,92 @@ public class HraCeskaDama
         return true;
     }
 
-    private bool PosunRozsahNahoreVlevo(int x, int y, int xChcesPohnout, int yChcesPohnout)
+    private bool PosunVeSmeruARozsahu(int posun, string smer, int x, int y)
     {
-        int posun = x - xChcesPohnout;
+        Barvy posledniBarva = Barvy.Zadna;
 
         for (int i = 1; i < posun; i++)
         {
-            if (HerniDeska[x - i, y - i].Barva != Barvy.Zadna
-                && HerniDeska[x - i, y - i].Barva == HerniDeska[x, y].Barva)
+            if (posledniBarva is Barvy.Bila or Barvy.Cerna)
             {
+                VypisCeskaDama.VypisChybu("Nelze přeskočit více kamenů!");
                 return false;
             }
 
-            ResetKamene(ref HerniDeska[x - i, y - i]);
-        }
-
-        return true;
-    }
-
-    private bool PosunRozsahNahoreVpravo(int x, int y, int xChcesPohnout, int yChcesPohnout)
-    {
-        int posun = x - xChcesPohnout;
-
-        for (int i = 1; i < posun; i++)
-        {
-            if (HerniDeska[x - i, y + i].Barva != Barvy.Zadna
-                && HerniDeska[x - i, y + i].Barva == HerniDeska[x, y].Barva)
+            switch (smer.ToLower())
             {
-                return false;
+                case "nahorevlevo":
+                    posledniBarva = HerniDeska[x - i, y - i].Barva;
+
+                    if (HerniDeska[x - i, y - i].Barva != Barvy.Zadna
+                        && HerniDeska[x - i, y - i].Barva == HerniDeska[x, y].Barva)
+                    {
+                        VypisCeskaDama.VypisChybu("Nelze přeskočit kámen stejné barvy!");
+                        return false;
+                    }
+
+                    if (HerniDeska[x - i, y - i].Barva != Barvy.Zadna)
+                    {
+                        OdeberKamen(x - i, y - i);
+                        ResetKamene(ref HerniDeska[x - i, y - i]);
+                    }
+
+                    break;
+
+                case "nahorevpravo":
+                    posledniBarva = HerniDeska[x - i, y + i].Barva;
+
+                    if (HerniDeska[x - i, y + i].Barva != Barvy.Zadna
+                        && HerniDeska[x - i, y + i].Barva == HerniDeska[x, y].Barva)
+                    {
+                        VypisCeskaDama.VypisChybu("Nelze přeskočit kámen stejné barvy!");
+                        return false;
+                    }
+
+                    if (HerniDeska[x - i, y + i].Barva != Barvy.Zadna)
+                    {
+                        OdeberKamen(x - i, y + i);
+                        ResetKamene(ref HerniDeska[x - i, y + i]);
+                    }
+
+                    break;
+
+                case "dolevlevo":
+                    posledniBarva = HerniDeska[x + i, y - i].Barva;
+
+                    if (HerniDeska[x + i, y - i].Barva != Barvy.Zadna
+                        && HerniDeska[x + i, y - i].Barva == HerniDeska[x, y].Barva)
+                    {
+                        VypisCeskaDama.VypisChybu("Nelze přeskočit kámen stejné barvy!");
+                        return false;
+                    }
+
+                    if (HerniDeska[x + i, y - i].Barva != Barvy.Zadna)
+                    {
+                        OdeberKamen(x + i, y - i);
+                        ResetKamene(ref HerniDeska[x + i, y - i]);
+                    }
+
+                    break;
+
+                case "dolevpravo":
+                    posledniBarva = HerniDeska[x + i, y + i].Barva;
+
+                    if (HerniDeska[x + i, y + i].Barva != Barvy.Zadna
+                        && HerniDeska[x + i, y + i].Barva == HerniDeska[x, y].Barva)
+                    {
+                        VypisCeskaDama.VypisChybu("Nelze přeskočit kámen stejné barvy!");
+                        return false;
+                    }
+
+                    if (HerniDeska[x + i, y + i].Barva != Barvy.Zadna)
+                    {
+                        OdeberKamen(x + i, y + i);
+                        ResetKamene(ref HerniDeska[x + i, y + i]);
+                    }
+
+                    break;
             }
-
-            ResetKamene(ref HerniDeska[x - i, y + i]);
-        }
-
-        return true;
-    }
-
-    private bool PosunRozsahDoleVlevo(int x, int y, int xChcesPohnout, int yChcesPohnout)
-    {
-        int posun = xChcesPohnout - x;
-
-        for (int i = 1; i < posun; i++)
-        {
-            if (HerniDeska[x + i, y - i].Barva != Barvy.Zadna
-                && HerniDeska[x + i, y - i].Barva == HerniDeska[x, y].Barva)
-            {
-                return false;
-            }
-
-            ResetKamene(ref HerniDeska[x + i, y - i]);
-        }
-
-        return true;
-    }
-
-    private bool PosunRozsahDoleVpravo(int x, int y, int xChcesPohnout, int yChcesPohnout)
-    {
-        int posun = xChcesPohnout - x;
-
-        for (int i = 1; i < posun; i++)
-        {
-            if (HerniDeska[x + i, y + i].Barva != Barvy.Zadna
-                && HerniDeska[x + i, y + i].Barva == HerniDeska[x, y].Barva)
-            {
-                return false;
-            }
-
-            ResetKamene(ref HerniDeska[x + i, y + i]);
         }
 
         return true;
@@ -396,28 +415,28 @@ public class HraCeskaDama
         if (xChcesPohnout < x && yChcesPohnout < y)
         {
             VymenaKamenu(x, y, xChcesPohnout, yChcesPohnout);
-            return PosunRozsahNahoreVlevo(x, y, xChcesPohnout, yChcesPohnout);
+            return PosunVeSmeruARozsahu(x - xChcesPohnout, "nahorevlevo", x, y);
         }
 
         // kontrola nahoře vpravo
         if (xChcesPohnout < x && yChcesPohnout > y)
         {
             VymenaKamenu(x, y, xChcesPohnout, yChcesPohnout);
-            return PosunRozsahNahoreVpravo(x, y, xChcesPohnout, yChcesPohnout);
+            return PosunVeSmeruARozsahu(x - xChcesPohnout, "nahorevpravo", x, y);
         }
 
         // kontrola dole vlevo
         if (xChcesPohnout > x && yChcesPohnout < y)
         {
             VymenaKamenu(x, y, xChcesPohnout, yChcesPohnout);
-            return PosunRozsahDoleVlevo(x, y, xChcesPohnout, yChcesPohnout);
+            return PosunVeSmeruARozsahu(xChcesPohnout - x, "dolevlevo", x, y);
         }
 
         // kontrola dole vpravo
         if (xChcesPohnout > x && yChcesPohnout > y)
         {
             VymenaKamenu(x, y, xChcesPohnout, yChcesPohnout);
-            return PosunRozsahDoleVpravo(x, y, xChcesPohnout, yChcesPohnout);
+            return PosunVeSmeruARozsahu(xChcesPohnout - x, "dolevpravo", x, y);
         }
 
         return false;
