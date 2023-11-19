@@ -6,80 +6,13 @@ public class GameCzechQueen
     private bool GameEnd { get; set; } = false;
     private int WhiteStonesCount { get; set; } = 12;
     private int BlackStonesCount { get; set; } = 12;
-
-    public void OtestujDamu()
-    {
-        int[,] testovaciPole = new[,]
-        {
-            {2, 0},
-            {3, 1},
-            {5, 3},
-            {4, 2},
-            {3, 1},
-            {5, 3},
-            {5, 1},
-            {4, 0},
-            {2, 6},
-            {3, 7},
-            {6, 2},
-            {5, 1},
-            {5, 3},
-            {6, 2},
-            {6, 4},
-            {5, 3},
-            {3, 7},
-            {4, 6},
-            {7, 3},
-            {6, 4},
-            {6, 2},
-            {7, 3},
-            {2, 4},
-            {3, 5},
-            {4, 0},
-            {3, 1}
-        };
-
-        Color barvaKamene = Color.Black;
-
-
-        for (int i = 0; i < testovaciPole.GetLength(0) - 1; i += 2)
-        {
-            barvaKamene = barvaKamene == Color.White ? Color.Black : Color.White;
-            MoveStone(testovaciPole[i, 0], testovaciPole[i, 1], testovaciPole[i + 1, 0], testovaciPole[i + 1, 1],
-                barvaKamene);
-
-
-            Console.Clear();
-            WriteCzechQueen.GameBoard(GameBoard);
-        }
-
-        SetStoneToNone(ref GameBoard[4, 6]);
-        Console.Clear();
-        WriteCzechQueen.GameBoard(GameBoard);
-    }
-
+    
     public void StartGame()
     {
         Console.Clear();
         GameEnd = false;
         NastavHerniDesku();
         WriteCzechQueen.GameBoard(GameBoard);
-
-        if (true)
-        {
-            OtestujDamu();
-            Console.WriteLine("konec testu");
-            SetStoneToNone(ref GameBoard[0, 0]);
-            RemoveStoneCount(0, 0);
-            GameBoard[7, 3].Queen = true;
-            GameBoard[7, 3].Color = Color.White;
-
-
-            Console.Clear();
-            WriteCzechQueen.GameBoard(GameBoard);
-            Console.ReadKey();
-        }
-
         GameLoop();
     }
 
