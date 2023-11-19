@@ -72,8 +72,9 @@ public static class VypisCeskaDama
     {
         Console.BackgroundColor = ConsoleColor.White;
         Console.ForegroundColor = ConsoleColor.Black;
-        Console.Write(herniDeska[x,y].Barva == Barvy.Bila ? "B " : "C ");
+        Console.Write(herniDeska[x, y].Barva == Barvy.Bila ? "B" : "C");
         Console.ResetColor();
+        Console.Write(" ");
     }
 
     public static void VypisChybu(string chyba) => Console.WriteLine(chyba);
@@ -88,10 +89,10 @@ public static class VypisCeskaDama
 
     public static void VypisNelzePohnout() => Console.WriteLine("Nelze pohnout!");
 
-    public static void VypisKonecHry(string kdoVyhral)
+    public static void VypisKonecHry(Barvy barva)
     {
         Console.WriteLine("Konec hry!");
-        Console.WriteLine(kdoVyhral.ToLower() == "bily" ? "Vyhral bily hrac!" : "Vyhral cerny hrac!");
+        Console.WriteLine(barva == Barvy.Bila ? "Vyhral bily hrac!" : "Vyhral cerny hrac!");
     }
 
     public static void VypisPocetKamenu(int pocetBilychKamenu, int pocetCernychKamenu)
