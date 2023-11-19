@@ -524,7 +524,6 @@ public class GameCzechQueen
     // --- KONEC HRY ---
     private bool CheckEndGame()
     {
-        // TODO: zkotrolovat nemůže provést svými kameny žádný tah.
         if (BlackStonesCount == 0)
         {
             EndGame(Color.White);
