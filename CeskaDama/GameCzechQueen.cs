@@ -6,12 +6,12 @@ public class GameCzechQueen
     private bool GameEnd { get; set; } = false;
     private int WhiteStonesCount { get; set; } = 12;
     private int BlackStonesCount { get; set; } = 12;
-    
+
     public void StartGame()
     {
         Console.Clear();
         GameEnd = false;
-        NastavHerniDesku();
+        SetGameBoard();
         WriteCzechQueen.GameBoard(GameBoard);
         GameLoop();
     }
@@ -72,9 +72,9 @@ public class GameCzechQueen
         Thread.Sleep(1000);
     }
 
-    private void MoveStone(int x, int y, int xWantMove, int yWantMove, Color barvaKamene)
+    private void MoveStone(int x, int y, int xWantMove, int yWantMove, Color stoneColor)
     {
-        CzechRequiredJump(x, y, xWantMove, barvaKamene);
+        CzechRequiredJump(x, y, xWantMove, stoneColor);
 
         if (CheckIsQueen(x, y))
         {
@@ -92,7 +92,7 @@ public class GameCzechQueen
 
         if (moveByOne)
         {
-            if (CheckQueenChange(xWantMove, barvaKamene))
+            if (CheckQueenChange(xWantMove, stoneColor))
             {
                 QueenChange(xWantMove, yWantMove);
             }
@@ -104,7 +104,7 @@ public class GameCzechQueen
 
         if (moveByTwo)
         {
-            if (CheckQueenChange(xWantMove, barvaKamene))
+            if (CheckQueenChange(xWantMove, stoneColor))
             {
                 QueenChange(xWantMove, yWantMove);
             }
@@ -115,10 +115,10 @@ public class GameCzechQueen
         WriteCzechQueen.CantMove();
     }
 
-    private void CzechRequiredJump(int x, int y, int xWantMove, Color barvaKamene)
+    private void CzechRequiredJump(int x, int y, int xWantMove, Color stoneColor)
     {
         bool canJumpOnTwo = false;
-        Color oppositeColor = barvaKamene == Color.White ? Color.Black : Color.White;
+        Color oppositeColor = stoneColor == Color.White ? Color.Black : Color.White;
         int oldX = x;
         int oldY = y;
 
@@ -462,7 +462,7 @@ public class GameCzechQueen
 
     // --- HERNI DESKA ---
 
-    private void NastavHerniDesku()
+    private void SetGameBoard()
     {
         SetWhiteStones();
         SetMiddleBoard();
