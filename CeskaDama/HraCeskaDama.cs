@@ -129,12 +129,13 @@ public class HraCeskaDama
         {
             bool posunutoOX = PosunOX(x, y, xChcesPohnout, yChcesPohnout);
 
-            if (!posunutoOX)
+            if (posunutoOX)
             {
-                VypisCeskaDama.VypisNelzePohnout();
+                return;
             }
-        }
 
+            VypisCeskaDama.VypisNelzePohnout();
+        }
 
         bool posunutoOJedno = PosunOJedno(x, y, xChcesPohnout, yChcesPohnout);
 
@@ -150,28 +151,41 @@ public class HraCeskaDama
 
         bool posunutoODva = PosunODva(x, y, xChcesPohnout, yChcesPohnout);
 
-        if (!posunutoODva)
+        if (posunutoODva)
         {
-            VypisCeskaDama.VypisNelzePohnout();
+            if (KontrolaZmenyNaDamu(xChcesPohnout, barvaKamene))
+            {
+                ZmenaNaDamu(xChcesPohnout, yChcesPohnout);
+            }
+
             return;
         }
 
-        if (KontrolaZmenyNaDamu(xChcesPohnout, barvaKamene))
-        {
-            ZmenaNaDamu(xChcesPohnout, yChcesPohnout);
-        }
+        VypisCeskaDama.VypisNelzePohnout();
     }
 
     private bool PosunOX(int x, int y, int xChcesPohnout, int yChcesPohnout)
     {
-        if (HerniDeska[x, y].Barva == Barvy.Zadna)
-        {
-            return false;
-        }
+        // TODO: refaktorovat a předělat, protože nefunguje například skákání 
 
         if (KontrolaJeVolnoVRozsahu(x, y, xChcesPohnout, yChcesPohnout))
         {
             VymenaKamenu(x, y, xChcesPohnout, yChcesPohnout);
+
+            bool posunutoOJedno = PosunOJedno(x, y, xChcesPohnout, yChcesPohnout);
+            if (posunutoOJedno)
+            {
+                return true;
+            }
+
+            bool posunutoODva = PosunODva(x, y, xChcesPohnout, yChcesPohnout);
+
+            if (!posunutoODva)
+            {
+                VypisCeskaDama.VypisNelzePohnout();
+                return false;
+            }
+
             return true;
         }
 
