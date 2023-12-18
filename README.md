@@ -15,3 +15,8 @@ Ve složce projektu
 dotnet run
 ```
 
+# Sestavení (build)
+Ve složce projektu
+```
+dotnet build
+```
